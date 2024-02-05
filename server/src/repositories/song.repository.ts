@@ -6,11 +6,11 @@ interface SongRequest {
     album: string;
     gener: string;
 }
-export const getSongs = () => Song.find([]);
+export const getSongs = async() => await Song.find([]);
 
-export const getSongById = (id: string) => Song.findById(id);
+export const getSongById = async(id: string) => await Song.findById(id);
 
-export const createSong =  (song: SongRequest) => Song.create(song);
-export const updateSong = (id: string, song: SongRequest) => Song.findByIdAndUpdate(id, song);
+export const createSong =  async(song: SongRequest) => await Song.create(song);
+export const updateSong = async(id: string, song: SongRequest) => await Song.findByIdAndUpdate(id, song);
 
-export const deleteSong = (id: string) => Song.findByIdAndDelete(id);
+export const deleteSong = async(id: string) => await Song.findByIdAndDelete(id);
