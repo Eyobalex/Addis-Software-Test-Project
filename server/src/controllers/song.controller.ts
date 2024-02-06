@@ -1,5 +1,5 @@
 import express from 'express';
-import { serverErrorResponse, successResponse } from 'helpers/response.js';
+import { serverErrorResponse, successResponse } from '../helpers/response.js';
 
 import {getAll , getById, create , update , destroy } from '../services/song.service.js';
 import { ISong } from 'types/song.type.js';

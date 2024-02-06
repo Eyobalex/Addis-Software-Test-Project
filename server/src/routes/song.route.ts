@@ -1,4 +1,4 @@
-import { getAllSongs, getSongById, createSong, updateSong, deleteSong } from "controllers/song.controller.js";
+import { getAllSongs, getSongById, createSong, updateSong, deleteSong } from "../controllers/song.controller.js";
 import express from "express";
 
 export default (router: express.Router) => {

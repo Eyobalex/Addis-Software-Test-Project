@@ -5,6 +5,7 @@ import compression from 'compression';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connect from './config/db.js';
+import routes from './routes/index.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.use('/', routes());
 connect().then(() => {
     try {
         app.listen(process.env.PORT, () => {
