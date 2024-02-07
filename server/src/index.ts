@@ -17,7 +17,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.use('/', routes());
+app.use('/api', routes());
 connect().then(() => {
     try {
         app.listen(process.env.PORT, () => {
