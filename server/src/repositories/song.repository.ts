@@ -4,32 +4,32 @@ import { ISong } from "../types/song.type.js";
 
 export const getSongs = async (query: any) => {
   let songs;
-  if (query.album && query.gener && query.artist) {
+  if (query.album && query.genre && query.artist) {
     if (query.search) {
       songs = await Song.find({
         title: { $regex: query.search, $options: "i" },
         album: query.album,
-        gener: query.gener,
+        genre: query.genre,
         artist: query.artist,
       });
     } else {
       songs = await Song.find({
         album: query.album,
-        gener: query.gener,
+        genre: query.genre,
         artist: query.artist,
       });
     }
-  } else if (query.album && query.gener) {
+  } else if (query.album && query.genre) {
     if (query.search) {
       songs = await Song.find({
         title: { $regex: query.search, $options: "i" },
         album: query.album,
-        gener: query.gener,
+        genre: query.genre,
       });
     } else {
       songs = await Song.find({
         album: query.album,
-        gener: query.gener,
+        genre: query.genre,
       });
     }
   } else if (query.album && query.artist) {
@@ -45,16 +45,16 @@ export const getSongs = async (query: any) => {
         artist: query.artist,
       });
     }
-  } else if (query.gener && query.artist) {
+  } else if (query.genre && query.artist) {
     if (query.search) {
       songs = await Song.find({
         title: { $regex: query.search, $options: "i" },
-        gener: query.gener,
+        genre: query.genre,
         artist: query.artist,
       });
     } else {
       songs = await Song.find({
-        gener: query.gener,
+        genre: query.genre,
         artist: query.artist,
       });
     }
@@ -69,15 +69,15 @@ export const getSongs = async (query: any) => {
         album: query.album,
       });
     }
-  } else if (query.gener) {
+  } else if (query.genre) {
     if (query.search) {
       songs = await Song.find({
         title: { $regex: query.search, $options: "i" },
-        gener: query.gener,
+        genre: query.genre,
       });
     } else {
       songs = await Song.find({
-        gener: query.gener,
+        genre: query.genre,
       });
     }
   } else if (query.artist) {
@@ -104,6 +104,15 @@ export const getSongs = async (query: any) => {
 
   return songs;
 };
+
+export const getSongStatistics = async () => {
+    const totalSongs = await Song.countDocuments();
+    const totalArtists = (await Song.distinct('artist')).length;
+    const totalAlbums = (await Song.distinct('album')).length;
+    const totalGenres = (await Song.distinct('genre')).length;
+
+    return {totalSongs, totalArtists, totalAlbums, totalGenres};
+} 
 export const getSongById = async (id: string) => await Song.findById(id);
 export const createSong = async (song: ISong) => await Song.create(song);
 export const updateSong = async (id: string, song: ISong) =>

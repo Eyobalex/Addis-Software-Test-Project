@@ -17,7 +17,7 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
         title: "",
         artist: "",
         album: "",
-        gener: "",
+        genre: "",
 
     }
   const [formData, setFormData] = useState<Song>(initialState)
@@ -103,13 +103,13 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
             required
           />
 
-          <label htmlFor="gener">Gener</label>
+          <label htmlFor="genre">Genre</label>
           <input
-            type="gener"
-            id="gener"
-            name="gener"
-            placeholder="Enter gener"
-            value={formData.gener}
+            type="genre"
+            id="genre"
+            name="genre"
+            placeholder="Enter genre"
+            value={formData.genre}
             onChange={handleChange}
             required
           />

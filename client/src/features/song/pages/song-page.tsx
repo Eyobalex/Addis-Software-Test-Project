@@ -50,7 +50,7 @@ export function SongPage() {
     let ugs: string[] = []
 
     songs.data.map((song: Song) => {
-      if (!ugs.includes(song.gener)) ugs.push(song.gener)
+      if (!ugs.includes(song.genre)) ugs.push(song.genre)
     })
 
     setUniqueGeners(ugs)
@@ -59,25 +59,16 @@ export function SongPage() {
   useEffect(() => {
     let queryParam = ""
 
-    
-    // if(selectedAlbum) {
-    //   queryParam.push([{field: 'album', operator: '=', value: selectedAlbum}]);
-    // }
-
-    // if(selectedArtist){
-    //   queryParam.push([{field: 'album', operator: '=', value: selectedAlbum}]);
-    // }
-
     if (selectedAlbum && selectedArtist && selectedGener) {
-      queryParam = `album=${selectedAlbum}&artist=${selectedArtist}&gener=${selectedGener}`
+      queryParam = `album=${selectedAlbum}&artist=${selectedArtist}&genre=${selectedGener}`
     } else if (selectedAlbum && selectedArtist) {
       queryParam = `album=${selectedAlbum}&artist=${selectedArtist}`
     } else if (selectedAlbum && selectedGener) {
-      queryParam = `album=${selectedAlbum}&gener=${selectedGener}`
+      queryParam = `album=${selectedAlbum}&genre=${selectedGener}`
     } else if (selectedArtist && selectedGener) {
-      queryParam = `artist=${selectedArtist}&gener=${selectedGener}`
+      queryParam = `artist=${selectedArtist}&genre=${selectedGener}`
     } else if (selectedGener) {
-      queryParam = `gener=${selectedGener}`
+      queryParam = `genre=${selectedGener}`
     } else if (selectedAlbum) {
       queryParam = `album=${selectedAlbum}`
     } else if (selectedArtist) {
@@ -132,11 +123,20 @@ export function SongPage() {
   }
   useEffect(() => {
     dispatch({ type: "songs/fetchSongs" })
+    dispatch({ type: "songs/fetchStatistics" })
   }, [dispatch])
   console.log("🚀 ~ SongPage ~ songssssssssss:", songs)
 
   return (
     <>
+
+    <ul>
+      <li>Total Songs: {songs.statistics.totalSongs}</li>
+      <li>Total Artists: {songs.statistics.totalArtists}</li>
+      <li>Total Albums: {songs.statistics.totalAlbums}</li>
+      <li>Total Genres: {songs.statistics.totalGenres}</li>
+      
+    </ul>
       <h1>
         Addis Songs
         <button onClick={openModal} style={{ marginLeft: "50rem" }}>
@@ -187,12 +187,12 @@ export function SongPage() {
           style={{ width: "15%", height: "2.5rem" }}
           onChange={e => setSelectedGener(e.target.value)}
         >
-          <option value="">Select Gener</option>
+          <option value="">Select Genre</option>
 
           {uniqueGeners &&
             uniqueGeners.length > 0 &&
-            uniqueGeners.map((gener: string) => (
-              <option value={gener}>{gener}</option>
+            uniqueGeners.map((genre: string) => (
+              <option value={genre}>{genre}</option>
               ))}
         </select>
 
@@ -212,7 +212,7 @@ export function SongPage() {
             <th>Title</th>
             <th>Artist</th>
             <th>Album</th>
-            <th>Gener</th>
+            <th>Genre</th>
             <th>Actions</th>
           </thead>
           <tbody>
@@ -223,7 +223,7 @@ export function SongPage() {
                   <td>{song.title}</td>
                   <td>{song.album}</td>
                   <td>{song.artist}</td>
-                  <td>{song.gener}</td>
+                  <td>{song.genre}</td>
                   <td>
                     <IconEdit
                       onClick={() => {
