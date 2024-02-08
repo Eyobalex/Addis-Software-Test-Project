@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import { getAllSongs, addSong as addSongAPI, updateSong as updateSongAPI, deleteSong as deleteSongAPI, getStatistics, getStatisticsByArtist, getStatisticsByAlbum, getStatisticsByGenre } from '../api/song.api';
-import { setSongs, createSong, updateExistingSong, deleteExistingSong, setStatistics, setArtistStat, setAlbumStat, setGenreStat } from './song.slice';
+import { getAllSongs, addSong as addSongAPI, updateSong as updateSongAPI, deleteSong as deleteSongAPI, getStatistics, getStatisticsByArtist, getStatisticsByAlbum, getStatisticsByGenre, getAlbums, getGenres, getArtists } from '../api/song.api';
+import { setSongs, createSong, updateExistingSong, deleteExistingSong, setStatistics, setArtistStat, setAlbumStat, setGenreStat, setGenres, setAlbums, setArtists } from './song.slice';
 
 
 function* fetchSongs(action: any): Generator<any, void, any> {
@@ -48,6 +48,30 @@ function* fetchGenreStatistics(): Generator<any, void, any> {
         console.error('Error fetching songs:', error);
     }
 }
+function* fetchGenres(): Generator<any, void, any> {
+    try {
+        const response = yield call(getGenres);
+        yield put(setGenres(response));
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+}
+function* fetchAlbums(): Generator<any, void, any> {
+    try {
+        const response = yield call(getAlbums);
+        yield put(setAlbums(response));
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+}
+function* fetchArtists(): Generator<any, void, any> {
+    try {
+        const response = yield call(getArtists);
+        yield put(setArtists(response));
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+}
 
 function* addSong(action: any): Generator<any, void, any> {
     try {
@@ -82,9 +106,15 @@ function* songSaga(): Generator<any, void, any> {
     yield all([
         takeLatest('songs/fetchSongs', fetchSongs),
         takeLatest('songs/fetchStatistics', fetchStatistics),
+
         takeLatest('songs/fetchArtistStatistics', fetchArtistStatistics),
         takeLatest('songs/fetchAlbumStatistics', fetchAlbumStatistics),
         takeLatest('songs/fetchGenreStatistics', fetchGenreStatistics),
+
+        takeLatest('songs/fetchArtists', fetchArtists),
+        takeLatest('songs/fetchAlbums', fetchAlbums),
+        takeLatest('songs/fetchGenres', fetchGenres),
+
         takeLatest('songs/addSong', addSong),
         takeLatest('songs/updateSong', updateSong),
         takeLatest('songs/deleteSong', deleteSong),

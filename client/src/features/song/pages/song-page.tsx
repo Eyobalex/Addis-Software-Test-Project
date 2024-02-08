@@ -131,6 +131,10 @@ export function SongPage() {
     dispatch({ type: "songs/fetchArtistStatistics" })
     dispatch({ type: "songs/fetchAlbumStatistics" })
     dispatch({ type: "songs/fetchGenreStatistics" })
+
+    dispatch({ type: "songs/fetchArtists" })
+    dispatch({ type: "songs/fetchAlbums" })
+    dispatch({ type: "songs/fetchGenres" })
     // dispatch({ type: "songs/fetchStatistics" })
   }, [dispatch])
   console.log("🚀 ~ SongPage ~ songssssssssss:", songs)
@@ -164,9 +168,9 @@ export function SongPage() {
         >
           <option value="">Select Artist</option>
 
-          {uniqueArtists &&
-            uniqueArtists.length > 0 &&
-            uniqueArtists.map((artist: string) => (
+          {songs.artists &&
+            songs.artists.length > 0 &&
+            songs.artists.map((artist: string) => (
               <option value={artist}>{artist}</option>
             ))}
         </select>
@@ -177,9 +181,9 @@ export function SongPage() {
           onChange={e => setSelectedAlbum(e.target.value)}
         >
           <option value="">Select Album</option>
-          {uniqueAlbums &&
-            uniqueAlbums.length > 0 &&
-            uniqueAlbums.map((album: string) => (
+          {songs.albums &&
+            songs.albums.length > 0 &&
+            songs.albums.map((album: string) => (
               <option value={album}>{album}</option>
             ))}
         </select>
@@ -191,9 +195,9 @@ export function SongPage() {
         >
           <option value="">Select Genre</option>
 
-          {uniqueGeners &&
-            uniqueGeners.length > 0 &&
-            uniqueGeners.map((genre: string) => (
+          {songs.genres &&
+            songs.genres.length > 0 &&
+            songs.genres.map((genre: string) => (
               <option value={genre}>{genre}</option>
             ))}
         </select>
@@ -267,7 +271,7 @@ export function SongPage() {
                         Total Songs:
                         {
                           songs.genreStat.filter(
-                            (stat: GenreStat) => stat.genre == song.genre,
+                            (stat: GenreStat) => stat?.genre == song?.genre,
                           )[0]?.totalSongs
                         }
                       </li>

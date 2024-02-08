@@ -8,14 +8,19 @@ import { ArtistStat } from '../../../models/artist-stat.model';
 
 interface SongsState {
     data: Song[];
+    isLoading: boolean;
     statistics: Statistics;
     genreStat: GenreStat[];
     albumStat: AlbumStat[];
     artistStat: ArtistStat[];
+    artists: string[];
+    albums: string[];
+    genres: string[];
 }
 
 const initialState: SongsState = {
     data: [],
+    isLoading: false,
     statistics: {
         totalAlbums: 0,
         totalArtists: 0,
@@ -35,6 +40,9 @@ const initialState: SongsState = {
         totalSongs: 0,
         totalAlbums: 0,
     }],
+    artists: [],
+    albums: [],
+    genres: [],
 };
 
 const songsSlice = createSlice({
@@ -55,6 +63,15 @@ const songsSlice = createSlice({
         },
         setAlbumStat: (state, action: PayloadAction<AlbumStat[]>) => {
             state.albumStat = action.payload;
+        },
+        setArtists: (state, action: PayloadAction<string[]>) => {
+            state.artists = action.payload;
+        },
+        setAlbums: (state, action: PayloadAction<string[]>) => {
+            state.albums = action.payload;
+        },
+        setGenres: (state, action: PayloadAction<string[]>) => {
+            state.genres = action.payload;
         },
         createSong: (state, action: PayloadAction<Song>) => {
             state.data.unshift(action.payload);
@@ -79,5 +96,5 @@ const songsSlice = createSlice({
     },
 });
 
-export const { setSongs, setStatistics, setAlbumStat, setArtistStat, setGenreStat, createSong, updateExistingSong, deleteExistingSong } = songsSlice.actions;
+export const { setSongs, setStatistics, setAlbumStat, setArtistStat,setAlbums, setArtists, setGenres, setGenreStat, createSong, updateExistingSong, deleteExistingSong } = songsSlice.actions;
 export default songsSlice.reducer;

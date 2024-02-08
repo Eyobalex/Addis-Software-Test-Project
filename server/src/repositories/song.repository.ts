@@ -137,6 +137,30 @@ export const getSongStatisticsByGenre = async () => {
 
     return response;
 } 
+export const getDistinctArtists = async () => {
+    const response = await Song.aggregate([
+        { $group: { _id: '$artist' } },
+        { $project: { _id: 0, artist: '$_id' } },
+      ]);
+
+    return response.map(res => res.artist);
+} 
+export const getDistinctAlbums = async () => {
+    const response = await Song.aggregate([
+        { $group: { _id: '$album' } },
+        { $project: { _id: 0, album: '$_id' } },
+      ]);
+
+    return response.map(res => res.album);
+} 
+export const getDistinctGenres = async () => {
+    const response = await Song.aggregate([
+        { $group: { _id: '$genres' } },
+        { $project: { _id: 0, genres: '$_id' } },
+      ]);
+
+    return response.map(res => res.genres);
+} 
 export const getSongById = async (id: string) => await Song.findById(id);
 export const createSong = async (song: ISong) => await Song.create(song);
 export const updateSong = async (id: string, song: ISong) =>

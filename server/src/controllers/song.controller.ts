@@ -11,6 +11,9 @@ import {
   getStatisticsByArtist,
   getStatisticsByAlbum,
   getStatisticsByGenre,
+  getArtists,
+  getAlbums,
+  getGenres,
 } from "../services/song.service.js";
 import { ISong } from "types/song.type.js";
 export const getAllSongs = async (
@@ -74,6 +77,48 @@ export const getSongStatisticsByGenre = async (
   try {
 
     const stats = await getStatisticsByGenre();
+    return successResponse(res, stats, "", 200);
+  } catch (error) {
+    console.log("🚀 ~ error:", error)
+    return serverErrorResponse(res);
+    
+  }
+};
+export const getDistinctArtists = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+
+    const stats = await getArtists();
+    return successResponse(res, stats, "", 200);
+  } catch (error) {
+    console.log("🚀 ~ error:", error)
+    return serverErrorResponse(res);
+    
+  }
+};
+export const getDistinctAlbums = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+
+    const stats = await getAlbums();
+    return successResponse(res, stats, "", 200);
+  } catch (error) {
+    console.log("🚀 ~ error:", error)
+    return serverErrorResponse(res);
+    
+  }
+};
+export const getDistinctGenres = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+
+    const stats = await getGenres();
     return successResponse(res, stats, "", 200);
   } catch (error) {
     console.log("🚀 ~ error:", error)
