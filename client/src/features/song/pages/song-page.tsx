@@ -11,6 +11,8 @@ import { ArtistStat } from "../../../models/artist-stat.model"
 import { AlbumStat } from "../../../models/album-stat.model"
 import { GenreStat } from "../../../models/genre-stat.model"
 import { debounce } from "lodash"
+import emotionStyled from "@emotion/styled"
+import { FilterComponent } from "../components/filter.component"
 export function SongPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined)
@@ -22,7 +24,7 @@ export function SongPage() {
   const [selectedAlbum, setSelectedAlbum] = useState<string | undefined>(
     undefined,
   )
-  const [selectedGener, setSelectedGener] = useState<string | undefined>(
+  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(
     undefined,
   )
 
@@ -35,16 +37,16 @@ export function SongPage() {
   useEffect(() => {
     let queryParam = ""
 
-    if (selectedAlbum && selectedArtist && selectedGener) {
-      queryParam = `album=${selectedAlbum}&artist=${selectedArtist}&genre=${selectedGener}`
+    if (selectedAlbum && selectedArtist && selectedGenre) {
+      queryParam = `album=${selectedAlbum}&artist=${selectedArtist}&genre=${selectedGenre}`
     } else if (selectedAlbum && selectedArtist) {
       queryParam = `album=${selectedAlbum}&artist=${selectedArtist}`
-    } else if (selectedAlbum && selectedGener) {
-      queryParam = `album=${selectedAlbum}&genre=${selectedGener}`
-    } else if (selectedArtist && selectedGener) {
-      queryParam = `artist=${selectedArtist}&genre=${selectedGener}`
-    } else if (selectedGener) {
-      queryParam = `genre=${selectedGener}`
+    } else if (selectedAlbum && selectedGenre) {
+      queryParam = `album=${selectedAlbum}&genre=${selectedGenre}`
+    } else if (selectedArtist && selectedGenre) {
+      queryParam = `artist=${selectedArtist}&genre=${selectedGenre}`
+    } else if (selectedGenre) {
+      queryParam = `genre=${selectedGenre}`
     } else if (selectedAlbum) {
       queryParam = `album=${selectedAlbum}`
     } else if (selectedArtist) {
@@ -56,7 +58,7 @@ export function SongPage() {
     }
 
     dispatch({ type: "songs/fetchSongs", payload: queryParam })
-  }, [selectedAlbum, selectedArtist, selectedGener, searchQuery])
+  }, [selectedAlbum, selectedArtist, selectedGenre, searchQuery])
 
   const openModal = () => setModalIsOpen(true)
   const closeModal = () => setModalIsOpen(false)
@@ -99,10 +101,10 @@ export function SongPage() {
   }
 
   const resetFilters = () => {
-    setSelectedArtist(undefined);
-    setSelectedAlbum(undefined);
-    setSelectedGener(undefined);
-    setSearchQuery(undefined);
+    setSelectedArtist(undefined)
+    setSelectedAlbum(undefined)
+    setSelectedGenre(undefined)
+    setSearchQuery(undefined)
   }
   useEffect(() => {
     dispatch({ type: "songs/fetchSongs" })
@@ -115,11 +117,18 @@ export function SongPage() {
     dispatch({ type: "songs/fetchGenres" })
 
     dispatch({ type: "songs/fetchStatistics" })
-
-    
   }, [dispatch])
   console.log("🚀 ~ SongPage ~ songssssssssss:", songs)
 
+  const FilterContainer = emotionStyled.div({
+    display: "flex",
+    justifyContent: "space-between",
+    width: "80%",
+    marginLeft: "10rem",
+  })
+
+  const Select = emotionStyled.select({ width: "15%", height: "2.5rem" })
+  const Input = emotionStyled.input({ width: "15%", height: ".5rem" })
   return (
     <>
       {songs.isLoading ? (
@@ -136,20 +145,9 @@ export function SongPage() {
             </button>
           </h1>
 
-          <div
-            className="filter-container"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "80%",
-              marginLeft: "10rem",
-            }}
-          >
-            <select
-              name=""
-              id=""
+          {/* <FilterContainer>
+            <Select
               value={selectedArtist}
-              style={{ width: "15%", height: "2.5rem" }}
               onChange={e => setSelectedArtist(e.target.value)}
             >
               <option value="">Select Artist</option>
@@ -159,12 +157,9 @@ export function SongPage() {
                 songs.artists.map((artist: string) => (
                   <option value={artist}>{artist}</option>
                 ))}
-            </select>
-            <select
-              name=""
-              id=""
+            </Select>
+            <Select
               value={selectedAlbum}
-              style={{ width: "15%", height: "2.5rem" }}
               onChange={e => setSelectedAlbum(e.target.value)}
             >
               <option value="">Select Album</option>
@@ -173,13 +168,10 @@ export function SongPage() {
                 songs.albums.map((album: string) => (
                   <option value={album}>{album}</option>
                 ))}
-            </select>
-            <select
-              name=""
-              id=""
-              value={selectedGener}
-              style={{ width: "15%", height: "2.5rem" }}
-              onChange={e => setSelectedGener(e.target.value)}
+            </Select>
+            <Select
+              value={selectedGenre}
+              onChange={e => setSelectedGenre(e.target.value)}
             >
               <option value="">Select Genre</option>
 
@@ -188,11 +180,10 @@ export function SongPage() {
                 songs.genres.map((genre: string) => (
                   <option value={genre}>{genre}</option>
                 ))}
-            </select>
+            </Select>
 
-            <input
+            <Input
               type="text"
-              style={{ width: "15%", height: ".5rem" }}
               value={searchQuery}
 
               onChange={debounce(async e => {                
@@ -202,7 +193,21 @@ export function SongPage() {
                 await setSearchQuery(e.currentTarget.value)
               }, 5000)}
             />
-          </div>
+          </FilterContainer> */}
+
+          <FilterComponent
+            albums={songs.albums}
+            artists={songs.artists}
+            genres={songs.genres}
+            selectedAlbum={selectedAlbum}
+            selectedArtist={selectedArtist}
+            selectedGenre={selectedGenre}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            setSelectedAlbum={setSelectedAlbum}
+            setSelectedArtist={setSelectedArtist}
+            setSelectedGenre={setSelectedGenre}
+          />
 
           <div className="container">
             <table>
