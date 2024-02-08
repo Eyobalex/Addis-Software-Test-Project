@@ -8,9 +8,9 @@ interface TotalStatsProp {
 export const TotalStats: React.FC<TotalStatsProp> = ({stats}) => {
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch({ type: "songs/fetchStatistics" })
-  }, [dispatch])
+//   useEffect(() => {
+//     dispatch({ type: "songs/fetchStatistics" })
+//   }, [dispatch])
   return (
     <>
       <ul>

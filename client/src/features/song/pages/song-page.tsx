@@ -135,173 +135,184 @@ export function SongPage() {
     dispatch({ type: "songs/fetchArtists" })
     dispatch({ type: "songs/fetchAlbums" })
     dispatch({ type: "songs/fetchGenres" })
-    // dispatch({ type: "songs/fetchStatistics" })
+
+    dispatch({ type: "songs/fetchStatistics" })
+
+    
   }, [dispatch])
   console.log("🚀 ~ SongPage ~ songssssssssss:", songs)
 
   return (
     <>
-      <TotalStats stats={songs.statistics} />
+      {songs.isLoading ? (
+        "Loading..."
+      ) : (
+        <>
+          <TotalStats stats={songs.statistics} />
 
-      <h1>
-        Addis Songs
-        <button onClick={openModal} style={{ marginLeft: "50rem" }}>
-          {" "}
-          <IconPlaylistAdd /> Add
-        </button>
-      </h1>
+          <h1>
+            Addis Songs
+            <button onClick={openModal} style={{ marginLeft: "50rem" }}>
+              {" "}
+              <IconPlaylistAdd /> Add
+            </button>
+          </h1>
 
-      <div
-        className="filter-container"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "80%",
-          marginLeft: "10rem",
-        }}
-      >
-        <select
-          name=""
-          id=""
-          style={{ width: "15%", height: "2.5rem" }}
-          onChange={e => setSelectedArtist(e.target.value)}
-        >
-          <option value="">Select Artist</option>
+          <div
+            className="filter-container"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "80%",
+              marginLeft: "10rem",
+            }}
+          >
+            <select
+              name=""
+              id=""
+              style={{ width: "15%", height: "2.5rem" }}
+              onChange={e => setSelectedArtist(e.target.value)}
+            >
+              <option value="">Select Artist</option>
 
-          {songs.artists &&
-            songs.artists.length > 0 &&
-            songs.artists.map((artist: string) => (
-              <option value={artist}>{artist}</option>
-            ))}
-        </select>
-        <select
-          name=""
-          id=""
-          style={{ width: "15%", height: "2.5rem" }}
-          onChange={e => setSelectedAlbum(e.target.value)}
-        >
-          <option value="">Select Album</option>
-          {songs.albums &&
-            songs.albums.length > 0 &&
-            songs.albums.map((album: string) => (
-              <option value={album}>{album}</option>
-            ))}
-        </select>
-        <select
-          name=""
-          id=""
-          style={{ width: "15%", height: "2.5rem" }}
-          onChange={e => setSelectedGener(e.target.value)}
-        >
-          <option value="">Select Genre</option>
+              {songs.artists &&
+                songs.artists.length > 0 &&
+                songs.artists.map((artist: string) => (
+                  <option value={artist}>{artist}</option>
+                ))}
+            </select>
+            <select
+              name=""
+              id=""
+              style={{ width: "15%", height: "2.5rem" }}
+              onChange={e => setSelectedAlbum(e.target.value)}
+            >
+              <option value="">Select Album</option>
+              {songs.albums &&
+                songs.albums.length > 0 &&
+                songs.albums.map((album: string) => (
+                  <option value={album}>{album}</option>
+                ))}
+            </select>
+            <select
+              name=""
+              id=""
+              style={{ width: "15%", height: "2.5rem" }}
+              onChange={e => setSelectedGener(e.target.value)}
+            >
+              <option value="">Select Genre</option>
 
-          {songs.genres &&
-            songs.genres.length > 0 &&
-            songs.genres.map((genre: string) => (
-              <option value={genre}>{genre}</option>
-            ))}
-        </select>
+              {songs.genres &&
+                songs.genres.length > 0 &&
+                songs.genres.map((genre: string) => (
+                  <option value={genre}>{genre}</option>
+                ))}
+            </select>
 
-        <input
-          type="text"
-          style={{ width: "15%", height: ".5rem" }}
-          onKeyDown={async e => {
-            await setSearchQuery(e.currentTarget.value)
-          }}
-        />
-      </div>
+            <input
+              type="text"
+              style={{ width: "15%", height: ".5rem" }}
+              onKeyDown={async e => {
+                await setSearchQuery(e.currentTarget.value)
+              }}
+            />
+          </div>
 
-      <div className="container">
-        <table>
-          <thead>
-            <th>No</th>
-            <th>Title</th>
-            <th>Artist</th>
-            <th>Album</th>
-            <th>Genre</th>
-            <th>Actions</th>
-          </thead>
-          <tbody>
-            {songs.data &&
-              songs.data.map((song: Song, index: number) => (
-                <tr>
-                  <td>{++index}</td>
-                  <td>{song.title}</td>
-                  <td>
-                    {song.artist}
-                    <hr />
-                    <ul>
-                      <li>
-                        Total Songs:{" "}
-                        {
-                          songs.artistStat.filter(
-                            (stat: ArtistStat) => stat.artist == song.artist,
-                          )[0]?.totalSongs
-                        }
-                      </li>
-                      <li>
-                        Total Albums:{" "}
-                        {
-                          songs.artistStat.filter(
-                            (stat: ArtistStat) => stat.artist == song.artist,
-                          )[0]?.totalAlbums
-                        }
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    {song.album}
-                    <hr />
-                    <ul>
-                      <li>
-                        Total Songs:
-                        {
-                          songs.albumStat.filter(
-                            (stat: AlbumStat) => stat.album == song.album,
-                          )[0]?.totalSongs
-                        }
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    {song.genre}
-                    <hr />
-                    <ul>
-                      <li>
-                        Total Songs:
-                        {
-                          songs.genreStat.filter(
-                            (stat: GenreStat) => stat?.genre == song?.genre,
-                          )[0]?.totalSongs
-                        }
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <IconEdit
-                      onClick={() => {
-                        openEditModal(song)
-                      }}
-                    />
-                    <IconTrash onClick={() => deleteCall(song)} />
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+          <div className="container">
+            <table>
+              <thead>
+                <th>No</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>Genre</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                {songs.data &&
+                  songs.data.map((song: Song, index: number) => (
+                    <tr>
+                      <td>{++index}</td>
+                      <td>{song.title}</td>
+                      <td>
+                        {song.artist}
+                        <hr />
+                        <ul>
+                          <li>
+                            Total Songs:{" "}
+                            {
+                              songs.artistStat.filter(
+                                (stat: ArtistStat) =>
+                                  stat.artist == song.artist,
+                              )[0]?.totalSongs
+                            }
+                          </li>
+                          <li>
+                            Total Albums:{" "}
+                            {
+                              songs.artistStat.filter(
+                                (stat: ArtistStat) =>
+                                  stat.artist == song.artist,
+                              )[0]?.totalAlbums
+                            }
+                          </li>
+                        </ul>
+                      </td>
+                      <td>
+                        {song.album}
+                        <hr />
+                        <ul>
+                          <li>
+                            Total Songs:
+                            {
+                              songs.albumStat.filter(
+                                (stat: AlbumStat) => stat.album == song.album,
+                              )[0]?.totalSongs
+                            }
+                          </li>
+                        </ul>
+                      </td>
+                      <td>
+                        {song.genre}
+                        <hr />
+                        <ul>
+                          <li>
+                            Total Songs:
+                            {
+                              songs.genreStat.filter(
+                                (stat: GenreStat) => stat?.genre == song?.genre,
+                              )[0]?.totalSongs
+                            }
+                          </li>
+                        </ul>
+                      </td>
+                      <td>
+                        <IconEdit
+                          onClick={() => {
+                            openEditModal(song)
+                          }}
+                        />
+                        <IconTrash onClick={() => deleteCall(song)} />
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
 
-      <Modal isOpen={modalIsOpen} onClose={closeModal}>
-        {/* <h2>Modal Content</h2> */}
-        {/* <p>This is a simple modal example.</p> */}
+          <Modal isOpen={modalIsOpen} onClose={closeModal}>
+            {/* <h2>Modal Content</h2> */}
+            {/* <p>This is a simple modal example.</p> */}
 
-        <SongForm
-          title={formTitle}
-          song={selectedSong}
-          openModal={openModal}
-          closeModal={closeModal}
-        />
-      </Modal>
+            <SongForm
+              title={formTitle}
+              song={selectedSong}
+              openModal={openModal}
+              closeModal={closeModal}
+            />
+          </Modal>
+        </>
+      )}
     </>
   )
 }

@@ -56,6 +56,9 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
             autoClose: 15000
           });
     }
+    dispatch({ type: "songs/fetchArtistStatistics" })
+    dispatch({ type: "songs/fetchAlbumStatistics" })
+    dispatch({ type: "songs/fetchGenreStatistics" })
 
     if(closeModal){
         closeModal();
