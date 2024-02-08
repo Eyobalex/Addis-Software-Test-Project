@@ -1,11 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Song } from '../../../models/song.model';
 import { Statistics } from '../../../models/statistics.model';
+import { GenreStat } from '../../../models/genre-stat.model';
+import { AlbumStat } from '../../../models/album-stat.model';
+import { ArtistStat } from '../../../models/artist-stat.model';
 
 
 interface SongsState {
     data: Song[];
     statistics: Statistics;
+    genreStat: GenreStat[];
+    albumStat: AlbumStat[];
+    artistStat: ArtistStat[];
 }
 
 const initialState: SongsState = {
@@ -15,8 +21,20 @@ const initialState: SongsState = {
         totalArtists: 0,
         totalGenres: 0,
         totalSongs: 0
-
-    }
+    },
+    genreStat: [{
+        totalSongs: 0,
+        genre: 'string'
+    }],
+    albumStat: [{
+        totalSongs: 0,
+        album: ""
+    }],
+    artistStat: [{
+        artist: "",
+        totalSongs: 0,
+        totalAlbums: 0,
+    }],
 };
 
 const songsSlice = createSlice({
@@ -28,6 +46,15 @@ const songsSlice = createSlice({
         },
         setStatistics: (state, action: PayloadAction<Statistics>) => {
             state.statistics = action.payload;
+        },
+        setGenreStat: (state, action: PayloadAction<GenreStat[]>) => {
+            state.genreStat = action.payload;
+        },
+        setArtistStat: (state, action: PayloadAction<ArtistStat[]>) => {
+            state.artistStat = action.payload;
+        },
+        setAlbumStat: (state, action: PayloadAction<AlbumStat[]>) => {
+            state.albumStat = action.payload;
         },
         createSong: (state, action: PayloadAction<Song>) => {
             state.data.unshift(action.payload);
@@ -52,5 +79,5 @@ const songsSlice = createSlice({
     },
 });
 
-export const { setSongs, setStatistics, createSong, updateExistingSong, deleteExistingSong } = songsSlice.actions;
+export const { setSongs, setStatistics, setAlbumStat, setArtistStat, setGenreStat, createSong, updateExistingSong, deleteExistingSong } = songsSlice.actions;
 export default songsSlice.reducer;

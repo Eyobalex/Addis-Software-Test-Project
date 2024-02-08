@@ -113,6 +113,30 @@ export const getSongStatistics = async () => {
 
     return {totalSongs, totalArtists, totalAlbums, totalGenres};
 } 
+export const getSongStatisticsByArtist = async () => {
+    const response = await Song.aggregate([
+        { $group: { _id: '$artist', totalSongs: { $sum: 1 }, totalAlbums: { $addToSet: '$album' } } },
+        { $project: { artist: '$_id', totalSongs: 1, totalAlbums: { $size: '$totalAlbums' }, _id: 0 } },
+      ]);
+
+    return response;
+} 
+export const getSongStatisticsByAlbum = async () => {
+    const response = await Song.aggregate([
+        { $group: { _id: '$album', totalSongs: { $sum: 1 }} },
+        { $project: { album: '$_id',  totalSongs: 1, _id: 0 } },
+      ]);
+
+    return response;
+} 
+export const getSongStatisticsByGenre = async () => {
+    const response = await Song.aggregate([
+        { $group: { _id: '$genre', totalSongs: { $sum: 1 } } },
+        { $project: { genre: '$_id', totalSongs: 1, _id: 0 } },
+      ]);
+
+    return response;
+} 
 export const getSongById = async (id: string) => await Song.findById(id);
 export const createSong = async (song: ISong) => await Song.create(song);
 export const updateSong = async (id: string, song: ISong) =>

@@ -6,6 +6,10 @@ import Modal from "../../../shared/components/modal/modal-component"
 import SongForm from "../components/song-form.component"
 import { confirmAlert } from "react-confirm-alert"
 import { toast } from "react-toastify"
+import { TotalStats } from "../components/total-stats.component"
+import { ArtistStat } from "../../../models/artist-stat.model"
+import { AlbumStat } from "../../../models/album-stat.model"
+import { GenreStat } from "../../../models/genre-stat.model"
 export function SongPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined)
@@ -29,6 +33,7 @@ export function SongPage() {
 
   const dispatch = useDispatch()
   const songs = useSelector((state: any) => state.songs)
+  console.log("🚀 ~ SongPage ~ songs:", songs)
 
   useEffect(() => {
     let uas: string[] = []
@@ -123,20 +128,17 @@ export function SongPage() {
   }
   useEffect(() => {
     dispatch({ type: "songs/fetchSongs" })
-    dispatch({ type: "songs/fetchStatistics" })
+    dispatch({ type: "songs/fetchArtistStatistics" })
+    dispatch({ type: "songs/fetchAlbumStatistics" })
+    dispatch({ type: "songs/fetchGenreStatistics" })
+    // dispatch({ type: "songs/fetchStatistics" })
   }, [dispatch])
   console.log("🚀 ~ SongPage ~ songssssssssss:", songs)
 
   return (
     <>
+      <TotalStats stats={songs.statistics} />
 
-    <ul>
-      <li>Total Songs: {songs.statistics.totalSongs}</li>
-      <li>Total Artists: {songs.statistics.totalArtists}</li>
-      <li>Total Albums: {songs.statistics.totalAlbums}</li>
-      <li>Total Genres: {songs.statistics.totalGenres}</li>
-      
-    </ul>
       <h1>
         Addis Songs
         <button onClick={openModal} style={{ marginLeft: "50rem" }}>
@@ -193,13 +195,13 @@ export function SongPage() {
             uniqueGeners.length > 0 &&
             uniqueGeners.map((genre: string) => (
               <option value={genre}>{genre}</option>
-              ))}
+            ))}
         </select>
 
         <input
           type="text"
           style={{ width: "15%", height: ".5rem" }}
-          onKeyDown={async(e) => {
+          onKeyDown={async e => {
             await setSearchQuery(e.currentTarget.value)
           }}
         />
@@ -221,9 +223,56 @@ export function SongPage() {
                 <tr>
                   <td>{++index}</td>
                   <td>{song.title}</td>
-                  <td>{song.album}</td>
-                  <td>{song.artist}</td>
-                  <td>{song.genre}</td>
+                  <td>
+                    {song.artist}
+                    <hr />
+                    <ul>
+                      <li>
+                        Total Songs:{" "}
+                        {
+                          songs.artistStat.filter(
+                            (stat: ArtistStat) => stat.artist == song.artist,
+                          )[0]?.totalSongs
+                        }
+                      </li>
+                      <li>
+                        Total Albums:{" "}
+                        {
+                          songs.artistStat.filter(
+                            (stat: ArtistStat) => stat.artist == song.artist,
+                          )[0]?.totalAlbums
+                        }
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    {song.album}
+                    <hr />
+                    <ul>
+                      <li>
+                        Total Songs:
+                        {
+                          songs.albumStat.filter(
+                            (stat: AlbumStat) => stat.album == song.album,
+                          )[0]?.totalSongs
+                        }
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    {song.genre}
+                    <hr />
+                    <ul>
+                      <li>
+                        Total Songs:
+                        {
+                          songs.genreStat.filter(
+                            (stat: GenreStat) => stat.genre == song.genre,
+                          )[0]?.totalSongs
+                        }
+                      </li>
+                    </ul>
+                  </td>
                   <td>
                     <IconEdit
                       onClick={() => {

@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import { getAllSongs, addSong as addSongAPI, updateSong as updateSongAPI, deleteSong as deleteSongAPI, getStatistics } from '../api/song.api';
-import { setSongs, createSong, updateExistingSong, deleteExistingSong, setStatistics } from './song.slice';
+import { getAllSongs, addSong as addSongAPI, updateSong as updateSongAPI, deleteSong as deleteSongAPI, getStatistics, getStatisticsByArtist, getStatisticsByAlbum, getStatisticsByGenre } from '../api/song.api';
+import { setSongs, createSong, updateExistingSong, deleteExistingSong, setStatistics, setArtistStat, setAlbumStat, setGenreStat } from './song.slice';
 
 
 function* fetchSongs(action: any): Generator<any, void, any> {
@@ -18,13 +18,32 @@ function* fetchSongs(action: any): Generator<any, void, any> {
 }
 function* fetchStatistics(): Generator<any, void, any> {
     try {
-
-        
-        console.log("🚀 ~ function*fetchSongs ~ response:")
         const response = yield call(getStatistics);
-        console.log("🚀 ~ function*fetchSongs ~ response:", response)
-    
         yield put(setStatistics(response));
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+}
+function* fetchArtistStatistics(): Generator<any, void, any> {
+    try {
+        const response = yield call(getStatisticsByArtist);
+        yield put(setArtistStat(response));
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+}
+function* fetchAlbumStatistics(): Generator<any, void, any> {
+    try {
+        const response = yield call(getStatisticsByAlbum);
+        yield put(setAlbumStat(response));
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+    }
+}
+function* fetchGenreStatistics(): Generator<any, void, any> {
+    try {
+        const response = yield call(getStatisticsByGenre);
+        yield put(setGenreStat(response));
     } catch (error) {
         console.error('Error fetching songs:', error);
     }
@@ -63,6 +82,9 @@ function* songSaga(): Generator<any, void, any> {
     yield all([
         takeLatest('songs/fetchSongs', fetchSongs),
         takeLatest('songs/fetchStatistics', fetchStatistics),
+        takeLatest('songs/fetchArtistStatistics', fetchArtistStatistics),
+        takeLatest('songs/fetchAlbumStatistics', fetchAlbumStatistics),
+        takeLatest('songs/fetchGenreStatistics', fetchGenreStatistics),
         takeLatest('songs/addSong', addSong),
         takeLatest('songs/updateSong', updateSong),
         takeLatest('songs/deleteSong', deleteSong),

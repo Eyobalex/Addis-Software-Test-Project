@@ -8,6 +8,9 @@ import {
   update,
   destroy,
   getStatistics,
+  getStatisticsByArtist,
+  getStatisticsByAlbum,
+  getStatisticsByGenre,
 } from "../services/song.service.js";
 import { ISong } from "types/song.type.js";
 export const getAllSongs = async (
@@ -33,6 +36,47 @@ export const getSongStatistics = async (
     const stats = await getStatistics();
     return successResponse(res, stats, "", 200);
   } catch (error) {
+    return serverErrorResponse(res);
+    
+  }
+};
+export const getSongStatisticsByArtist = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+
+    const stats = await getStatisticsByArtist();
+    return successResponse(res, stats, "", 200);
+  } catch (error) {
+    return serverErrorResponse(res);
+    
+  }
+};
+export const getSongStatisticsByAlbum = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+
+    const stats = await getStatisticsByAlbum();
+    return successResponse(res, stats, "", 200);
+  } catch (error) {
+    console.log("🚀 ~ error:", error)
+    return serverErrorResponse(res);
+    
+  }
+};
+export const getSongStatisticsByGenre = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+
+    const stats = await getStatisticsByGenre();
+    return successResponse(res, stats, "", 200);
+  } catch (error) {
+    console.log("🚀 ~ error:", error)
     return serverErrorResponse(res);
     
   }
