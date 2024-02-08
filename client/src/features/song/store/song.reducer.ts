@@ -3,12 +3,12 @@ import { getAllSongs, addSong as addSongAPI, updateSong as updateSongAPI, delete
 import { setSongs, createSong, updateExistingSong, deleteExistingSong } from './song.slice';
 
 
-function* fetchSongs(): Generator<any, void, any> {
+function* fetchSongs(action: any): Generator<any, void, any> {
     try {
 
         
         console.log("🚀 ~ function*fetchSongs ~ response:")
-        const response = yield call(getAllSongs);
+        const response = yield call(getAllSongs, action.payload);
         console.log("🚀 ~ function*fetchSongs ~ response:", response)
     
         yield put(setSongs(response));
