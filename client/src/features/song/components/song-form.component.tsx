@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import "./song-form.css"
 import { Song } from "../../../models/song.model";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 interface SongFormProps {
     title: string;
@@ -44,8 +45,16 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
 
     if(song){
         dispatch({type: "songs/updateSong", payload: {id: song._id, song: formData}})
+        toast.success("Song updated successfully!", {
+            position: "top-center",
+            autoClose: 15000
+          });
     }else{
         dispatch({type: "songs/addSong", payload: formData})
+        toast.success("Song created successfully!", {
+            position: "top-center",
+            autoClose: 15000
+          });
     }
 
     if(closeModal){

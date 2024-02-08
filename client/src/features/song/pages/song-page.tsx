@@ -4,7 +4,8 @@ import { Song } from "../../../models/song.model"
 import { IconEdit, IconPlaylistAdd, IconTrash } from "@tabler/icons-react"
 import Modal from "../../../shared/components/modal/modal-component"
 import SongForm from "../components/song-form.component"
-
+import { confirmAlert } from 'react-confirm-alert'
+import { toast } from "react-toastify"
 export function SongPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song|undefined>(undefined)
@@ -24,8 +25,26 @@ export function SongPage() {
 
   const deleteCall = (song: Song) => {
     // console.log("🚀 ~ deleteCall ~ song:", {...song, id: song._id})
-    dispatch({type: 'songs/deleteSong', payload: song._id});
-    closeModal();
+
+    confirmAlert({
+        title: `Delete ${song.title}`,                       
+        message: 'You are about to delete a song. This is a permanent action.',               
+        childrenElement: () => <div>Custom UI</div>,       
+        confirmLabel: 'Delete',                          
+        cancelLabel: 'Cancel',                            
+        onConfirm: () => {
+            dispatch({type: 'songs/deleteSong', payload: song._id})
+
+            closeModal();
+            toast.success("Song deleted successfully!", {
+                position: "top-center",
+                autoClose: 15000
+              });
+        },   
+        onCancel: () => closeModal(),      
+        overlayClassName: "overlay-custom-class-name"      
+      })
+    
   }
   useEffect(() => {
     // Fetch songs from the Redux store
@@ -36,11 +55,11 @@ export function SongPage() {
   return (
     <>
       <h1>Addis Songs
-
       <button onClick={openModal}>
         {" "}
         <IconPlaylistAdd /> Add
       </button>
+
       </h1>
       <hr />
 
