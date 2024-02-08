@@ -155,7 +155,7 @@ export const getDistinctAlbums = async () => {
 } 
 export const getDistinctGenres = async () => {
     const response = await Song.aggregate([
-        { $group: { _id: '$genres' } },
+        { $group: { _id: '$genre' } },
         { $project: { _id: 0, genres: '$_id' } },
       ]);
 

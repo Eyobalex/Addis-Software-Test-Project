@@ -10,14 +10,11 @@ import { TotalStats } from "../components/total-stats.component"
 import { ArtistStat } from "../../../models/artist-stat.model"
 import { AlbumStat } from "../../../models/album-stat.model"
 import { GenreStat } from "../../../models/genre-stat.model"
+import { debounce } from "lodash"
 export function SongPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined)
   const [formTitle, setFormTitle] = useState<string>("Add New Song")
-
-  const [uniqueArtists, setUniqueArtists] = useState<string[]>([])
-  const [uniqueAlbums, setUniqueAlbums] = useState<string[]>([])
-  const [uniqueGeners, setUniqueGeners] = useState<string[]>([])
 
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
     undefined,
@@ -34,32 +31,6 @@ export function SongPage() {
   const dispatch = useDispatch()
   const songs = useSelector((state: any) => state.songs)
   console.log("🚀 ~ SongPage ~ songs:", songs)
-
-  useEffect(() => {
-    let uas: string[] = []
-
-    songs.data.map((song: Song) => {
-      if (!uas.includes(song.artist)) uas.push(song.artist)
-    })
-
-    setUniqueArtists(uas)
-
-    let uals: string[] = []
-
-    songs.data.map((song: Song) => {
-      if (!uals.includes(song.album)) uals.push(song.album)
-    })
-
-    setUniqueAlbums(uals)
-
-    let ugs: string[] = []
-
-    songs.data.map((song: Song) => {
-      if (!ugs.includes(song.genre)) ugs.push(song.genre)
-    })
-
-    setUniqueGeners(ugs)
-  }, [songs])
 
   useEffect(() => {
     let queryParam = ""
@@ -126,6 +97,13 @@ export function SongPage() {
       overlayClassName: "overlay-custom-class-name",
     })
   }
+
+  const resetFilters = () => {
+    setSelectedArtist(undefined);
+    setSelectedAlbum(undefined);
+    setSelectedGener(undefined);
+    setSearchQuery(undefined);
+  }
   useEffect(() => {
     dispatch({ type: "songs/fetchSongs" })
     dispatch({ type: "songs/fetchArtistStatistics" })
@@ -170,6 +148,7 @@ export function SongPage() {
             <select
               name=""
               id=""
+              value={selectedArtist}
               style={{ width: "15%", height: "2.5rem" }}
               onChange={e => setSelectedArtist(e.target.value)}
             >
@@ -184,6 +163,7 @@ export function SongPage() {
             <select
               name=""
               id=""
+              value={selectedAlbum}
               style={{ width: "15%", height: "2.5rem" }}
               onChange={e => setSelectedAlbum(e.target.value)}
             >
@@ -197,6 +177,7 @@ export function SongPage() {
             <select
               name=""
               id=""
+              value={selectedGener}
               style={{ width: "15%", height: "2.5rem" }}
               onChange={e => setSelectedGener(e.target.value)}
             >
@@ -212,9 +193,14 @@ export function SongPage() {
             <input
               type="text"
               style={{ width: "15%", height: ".5rem" }}
-              onKeyDown={async e => {
+              value={searchQuery}
+
+              onChange={debounce(async e => {                
+                await setSearchQuery(e.target.value)
+              }, 5000)}
+              onKeyDown={debounce(async e => {
                 await setSearchQuery(e.currentTarget.value)
-              }}
+              }, 5000)}
             />
           </div>
 

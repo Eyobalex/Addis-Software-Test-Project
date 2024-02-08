@@ -60,6 +60,10 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
     dispatch({ type: "songs/fetchAlbumStatistics" })
     dispatch({ type: "songs/fetchGenreStatistics" })
 
+    dispatch({ type: "songs/fetchArtists" })
+    dispatch({ type: "songs/fetchAlbums" })
+    dispatch({ type: "songs/fetchGenres" })
+
     if(closeModal){
         closeModal();
     }
