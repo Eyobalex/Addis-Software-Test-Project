@@ -5,9 +5,13 @@ import { setSongs, createSong, updateExistingSong, deleteExistingSong } from './
 
 function* fetchSongs(): Generator<any, void, any> {
     try {
+
+        
+        console.log("🚀 ~ function*fetchSongs ~ response:")
         const response = yield call(getAllSongs);
+        console.log("🚀 ~ function*fetchSongs ~ response:", response)
     
-        yield put(setSongs(response.data));
+        yield put(setSongs(response));
     } catch (error) {
         console.error('Error fetching songs:', error);
     }
@@ -16,7 +20,8 @@ function* fetchSongs(): Generator<any, void, any> {
 function* addSong(action: any): Generator<any, void, any> {
     try {
         const response = yield call(addSongAPI, action.payload);
-        yield put(createSong(response.data));
+        console.log("🚀 ~ function*addSong ~ response.data:", response.data)
+        yield put(createSong(response.data.data));
     } catch (error) {
         console.error('Error adding song:', error);
     }
@@ -25,13 +30,14 @@ function* addSong(action: any): Generator<any, void, any> {
 function* updateSong(action: any): Generator<any, void, any> {
     try {
         const response = yield call(updateSongAPI, action.payload.id, action.payload.song);
-        yield put(updateExistingSong(response.data));
+        yield put(updateExistingSong(response.data.data));
     } catch (error) {
         console.error('Error updating song:', error);
     }
 }
 
 function* deleteSong(action: any): Generator<any, void, any> {
+    console.log("🚀 ~ function*deleteSong ~ action:", action)
     try {
         yield call(deleteSongAPI, action.payload);
         yield put(deleteExistingSong(action.payload));

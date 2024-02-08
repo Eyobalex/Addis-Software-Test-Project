@@ -3,11 +3,11 @@ import { Song } from '../../../models/song.model';
 
 
 interface SongsState {
-    list: Song[];
+    data: Song[];
 }
 
 const initialState: SongsState = {
-    list: [],
+    data: [],
 };
 
 const songsSlice = createSlice({
@@ -15,19 +15,27 @@ const songsSlice = createSlice({
     initialState,
     reducers: {
         setSongs: (state, action: PayloadAction<Song[]>) => {
-            state.list = action.payload;
+            state.data = action.payload;
         },
         createSong: (state, action: PayloadAction<Song>) => {
-            state.list.push(action.payload);
+            state.data.unshift(action.payload);
         },
         updateExistingSong: (state, action: PayloadAction<Song>) => {
-            const index = state.list.findIndex(song => song.id === action.payload.id);
-            if (index !== -1) {
-                state.list[index] = action.payload;
-            }
+            // const index = state.data.findIndex(song => song._id === action.payload._id);
+            // if (index !== -1) {
+            //     state.data[index] = action.payload;
+            // }
+
+            state.data = state.data.map((song) => {
+                if(song._id == action.payload._id){
+                    return action.payload
+                }else{
+                    return song;
+                }
+            })
         },
         deleteExistingSong: (state, action: PayloadAction<string>) => {
-            state.list = state.list.filter(song => song.id !== action.payload);
+            state.data = state.data.filter(song => song._id !== action.payload);
         },
     },
 });
