@@ -197,6 +197,7 @@ export function SongPage() {
         <Relative>
           <Centered>
             
+            {/*@ts-ignore*/}
             <div css={Loader}></div>
           </Centered>
         </Relative>
