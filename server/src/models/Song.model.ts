@@ -13,9 +13,9 @@ const SongSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide an album for the song"],
     },
-    gener: {
+    genre: {
         type: String,
-        required: [true, "Please provide a gener for the song"],
+        required: [true, "Please provide a genre for the song"],
     },
 });
 

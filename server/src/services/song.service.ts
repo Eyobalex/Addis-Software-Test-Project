@@ -1,7 +1,15 @@
 
 import { ISong } from 'types/song.type.js';
-import {createSong, deleteSong, getSongById, getSongs, updateSong} from '../repositories/song.repository.js' 
-export const getAll = async () => await getSongs();
+import {createSong, deleteSong, getDistinctAlbums, getDistinctArtists, getDistinctGenres, getSongById, getSongStatistics, getSongStatisticsByAlbum, getSongStatisticsByArtist, getSongStatisticsByGenre, getSongs, updateSong} from '../repositories/song.repository.js' 
+import { IStatisticsResponse } from 'types/statistics-response.type.js';
+export const getAll = async (query: any) => await getSongs(query);
+export const getStatistics = async () => await getSongStatistics();
+export const getStatisticsByArtist = async () => await getSongStatisticsByArtist();
+export const getStatisticsByAlbum = async () => await getSongStatisticsByAlbum();
+export const getStatisticsByGenre = async () => await getSongStatisticsByGenre();
+export const getArtists = async () => await getDistinctArtists();
+export const getAlbums = async () => await getDistinctAlbums();
+export const getGenres = async () => await getDistinctGenres();
 export const getById = async( id: string) => await getSongById(id);
 export const create =  async (song: ISong) => await createSong(song);
 export const update = async (id: string, song: ISong) => await updateSong(id, song);

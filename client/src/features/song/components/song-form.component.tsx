@@ -1,35 +1,71 @@
 import { useEffect, useState } from "react"
-import "./song-form.css"
-import { Song } from "../../../models/song.model";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { Song } from "../../../models/song.model"
+import { useDispatch } from "react-redux"
+import { toast } from "react-toastify"
+import emotionStyled from "@emotion/styled"
 
 interface SongFormProps {
-    title: string;
-    song?: Song;
+  title: string
+  song?: Song
 
-    openModal?: () => void;
-    closeModal?: () => void;
+  openModal?: () => void
+  closeModal?: () => void
 }
-const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal}) => {
 
-    const initialState: Song ={
-        title: "",
-        artist: "",
-        album: "",
-        gener: "",
+// const FormContainer = emotionStyled.div
+const Form = emotionStyled.form({
+  display: "flex",
+  flexDirection: "column",
+})
 
-    }
+const Label = emotionStyled.label({
+  fontSize: "1.4rem",
+  marginBottom: ".5rem",
+  textAlign: "start",
+})
+
+const Input = emotionStyled.input({
+  padding: "1rem",
+  marginBottom: "1.5rem",
+  border: "1px solid #ccc",
+  borderRadius: ".4rem",
+})
+
+const Button = emotionStyled.button({
+  backgroundColor: '#3498db',
+  color: '#fff',
+  padding: '1rem',
+  border: 'none',
+  borderRadius: '.4rem',
+  cursor: 'pointer',
+  fontSize: '1.6rem',
+  transition: 'background-color 0.3s',
+
+  '&:hover': {
+    backgroundColor: '#217dbb', // Change the color on hover if needed
+  },
+})
+const SongForm: React.FC<SongFormProps> = ({
+  title,
+  song,
+  openModal,
+  closeModal,
+}) => {
+  const initialState: Song = {
+    title: "",
+    artist: "",
+    album: "",
+    genre: "",
+  }
   const [formData, setFormData] = useState<Song>(initialState)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    if(song){
-        setFormData(song)
+    if (song) {
+      setFormData(song)
     }
-  }, [song]);
-  
+  }, [song])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -43,35 +79,42 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
     // Add form submission logic here
     // console.log("Form submitted:", formData)
 
-    if(song){
-        dispatch({type: "songs/updateSong", payload: {id: song._id, song: formData}})
-        toast.success("Song updated successfully!", {
-            position: "top-center",
-            autoClose: 15000
-          });
-    }else{
-        dispatch({type: "songs/addSong", payload: formData})
-        toast.success("Song created successfully!", {
-            position: "top-center",
-            autoClose: 15000
-          });
+    if (song) {
+      dispatch({
+        type: "songs/updateSong",
+        payload: { id: song._id, song: formData },
+      })
+      toast.success("Song updated successfully!", {
+        position: "top-center",
+        autoClose: 15000,
+      })
+    } else {
+      dispatch({ type: "songs/addSong", payload: formData })
+      toast.success("Song created successfully!", {
+        position: "top-center",
+        autoClose: 15000,
+      })
     }
+    dispatch({ type: "songs/fetchArtistStatistics" })
+    dispatch({ type: "songs/fetchAlbumStatistics" })
+    dispatch({ type: "songs/fetchGenreStatistics" })
 
-    if(closeModal){
-        closeModal();
+    dispatch({ type: "songs/fetchArtists" })
+    dispatch({ type: "songs/fetchAlbums" })
+    dispatch({ type: "songs/fetchGenres" })
+
+    if (closeModal) {
+      closeModal()
     }
-
-    
-
   }
 
   return (
     <>
-    <h1>{title}</h1>
+      <h1>{title}</h1>
       <div>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="title">Title</label>
-          <input
+        <Form onSubmit={handleSubmit}>
+          <Label htmlFor="title">Title</Label>
+          <Input
             type="text"
             id="title"
             name="title"
@@ -81,8 +124,8 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
             required
           />
 
-          <label htmlFor="artist">Artist</label>
-          <input
+          <Label htmlFor="artist">Artist</Label>
+          <Input
             type="text"
             id="artist"
             name="artist"
@@ -92,8 +135,8 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
             required
           />
 
-          <label htmlFor="email">Album</label>
-          <input
+          <Label htmlFor="email">Album</Label>
+          <Input
             type="album"
             id="album"
             name="album"
@@ -103,19 +146,19 @@ const SongForm: React.FC<SongFormProps> = ({title, song, openModal, closeModal})
             required
           />
 
-          <label htmlFor="gener">Gener</label>
-          <input
-            type="gener"
-            id="gener"
-            name="gener"
-            placeholder="Enter gener"
-            value={formData.gener}
+          <Label htmlFor="genre">Genre</Label>
+          <Input
+            type="genre"
+            id="genre"
+            name="genre"
+            placeholder="Enter genre"
+            value={formData.genre}
             onChange={handleChange}
             required
           />
 
-          <button type="submit">{song ? "Update" : "Submit"}</button>
-        </form>
+          <Button type="submit">{song ? "Update" : "Submit"}</Button>
+        </Form>
       </div>
     </>
   )
