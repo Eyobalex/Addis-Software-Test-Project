@@ -13,6 +13,78 @@ import { GenreStat } from "../../../models/genre-stat.model"
 import { debounce } from "lodash"
 import emotionStyled from "@emotion/styled"
 import { FilterComponent } from "../components/filter.component"
+import { css, keyframes } from "@emotion/react"
+import Empty from "../../../shared/components/icons/empty.component"
+
+const loaderAnimation = keyframes`
+  0% {
+    box-shadow: 
+      0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6, 30px 0 #F4DD51, 0 0 #E3AAD6,
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6;
+  }
+  12.5% {
+    box-shadow: 
+      0 0 #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6, 30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6;
+  }
+  25% {
+    box-shadow: 
+      0 0 #F4DD51, 0 0 #E3AAD6, 30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
+      0 30px #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6;
+  }
+  37.5% {
+    box-shadow: 
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
+      0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6;
+  }
+  50% {
+    box-shadow: 
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6,
+      0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6, -30px 0 #F4DD51, 0 0 #E3AAD6;
+  }
+  62.5% {
+    box-shadow: 
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6,
+      0 0 #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6, -30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6;
+  }
+  75% {
+    box-shadow: 
+      0 -30px #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6,
+      0 0 #F4DD51, 0 0 #E3AAD6, -30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6;
+  }
+  87.5% {
+    box-shadow: 
+      0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6,
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6;
+  }
+  100% {
+    box-shadow: 
+      0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6, 30px 0 #F4DD51, 0 0 #E3AAD6,
+      0 0 #F4DD51, 0 0 #E3AAD6, 0 0 #F4DD51, 0 0 #E3AAD6;
+  }
+`
+
+const Loader = css`
+  width: 22px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f10c49;
+  animation: ${loaderAnimation} 1.5s infinite linear;
+`
+
+const Relative = emotionStyled.div({
+  position: "relative",
+  marginTop: "25rem"
+})
+
+const Centered = emotionStyled.div({
+  display: "block",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+})
+
 export function SongPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined)
@@ -118,21 +190,16 @@ export function SongPage() {
 
     dispatch({ type: "songs/fetchStatistics" })
   }, [dispatch])
-  console.log("🚀 ~ SongPage ~ songssssssssss:", songs)
 
-  const FilterContainer = emotionStyled.div({
-    display: "flex",
-    justifyContent: "space-between",
-    width: "80%",
-    marginLeft: "10rem",
-  })
-
-  const Select = emotionStyled.select({ width: "15%", height: "2.5rem" })
-  const Input = emotionStyled.input({ width: "15%", height: ".5rem" })
   return (
     <>
       {songs.isLoading ? (
-        "Loading..."
+        <Relative>
+          <Centered>
+            
+            <div css={Loader}></div>
+          </Centered>
+        </Relative>
       ) : (
         <>
           <TotalStats stats={songs.statistics} />
@@ -144,56 +211,6 @@ export function SongPage() {
               <IconPlaylistAdd /> Add
             </button>
           </h1>
-
-          {/* <FilterContainer>
-            <Select
-              value={selectedArtist}
-              onChange={e => setSelectedArtist(e.target.value)}
-            >
-              <option value="">Select Artist</option>
-
-              {songs.artists &&
-                songs.artists.length > 0 &&
-                songs.artists.map((artist: string) => (
-                  <option value={artist}>{artist}</option>
-                ))}
-            </Select>
-            <Select
-              value={selectedAlbum}
-              onChange={e => setSelectedAlbum(e.target.value)}
-            >
-              <option value="">Select Album</option>
-              {songs.albums &&
-                songs.albums.length > 0 &&
-                songs.albums.map((album: string) => (
-                  <option value={album}>{album}</option>
-                ))}
-            </Select>
-            <Select
-              value={selectedGenre}
-              onChange={e => setSelectedGenre(e.target.value)}
-            >
-              <option value="">Select Genre</option>
-
-              {songs.genres &&
-                songs.genres.length > 0 &&
-                songs.genres.map((genre: string) => (
-                  <option value={genre}>{genre}</option>
-                ))}
-            </Select>
-
-            <Input
-              type="text"
-              value={searchQuery}
-
-              onChange={debounce(async e => {                
-                await setSearchQuery(e.target.value)
-              }, 5000)}
-              onKeyDown={debounce(async e => {
-                await setSearchQuery(e.currentTarget.value)
-              }, 5000)}
-            />
-          </FilterContainer> */}
 
           <FilterComponent
             albums={songs.albums}
@@ -220,7 +237,16 @@ export function SongPage() {
                 <th>Actions</th>
               </thead>
               <tbody>
-                {songs.data &&
+
+                {songs.data && songs.data.length < 1 ? (
+                  <tr>
+                    <td colSpan={6}>
+                    <Empty />
+
+                    </td>
+
+                  </tr>
+                ) : (
                   songs.data.map((song: Song, index: number) => (
                     <tr>
                       <td>{++index}</td>
@@ -286,7 +312,9 @@ export function SongPage() {
                         <IconTrash onClick={() => deleteCall(song)} />
                       </td>
                     </tr>
-                  ))}
+                  ))
+                )}
+               
               </tbody>
             </table>
           </div>
