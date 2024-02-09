@@ -2,7 +2,7 @@
 import { Song } from "../models/Song.model.js";
 import { ISong } from "../types/song.type.js";
 
-export const getSongs = async (query: any) => {
+export const getAll = async (query: any) => {
   let songs;
   if (query.album && query.genre && query.artist) {
     if (query.search) {
@@ -137,7 +137,7 @@ export const getSongStatisticsByGenre = async () => {
 
     return response;
 } 
-export const getDistinctArtists = async () => {
+export const getArtists = async () => {
     const response = await Song.aggregate([
         { $group: { _id: '$artist' } },
         { $project: { _id: 0, artist: '$_id' } },
@@ -145,7 +145,7 @@ export const getDistinctArtists = async () => {
 
     return response.map(res => res.artist);
 } 
-export const getDistinctAlbums = async () => {
+export const getAlbums = async () => {
     const response = await Song.aggregate([
         { $group: { _id: '$album' } },
         { $project: { _id: 0, album: '$_id' } },
@@ -153,7 +153,7 @@ export const getDistinctAlbums = async () => {
 
     return response.map(res => res.album);
 } 
-export const getDistinctGenres = async () => {
+export const getGenres = async () => {
     const response = await Song.aggregate([
         { $group: { _id: '$genre' } },
         { $project: { _id: 0, genres: '$_id' } },
@@ -161,9 +161,9 @@ export const getDistinctGenres = async () => {
 
     return response.map(res => res.genres);
 } 
-export const getSongById = async (id: string) => await Song.findById(id);
-export const createSong = async (song: ISong) => await Song.create(song);
-export const updateSong = async (id: string, song: ISong) =>
+export const getById = async (id: string) => await Song.findById(id);
+export const create = async (song: ISong) => await Song.create(song);
+export const update = async (id: string, song: ISong) =>
   await Song.findByIdAndUpdate(id, song, { new: true });
-export const deleteSong = async (id: string) =>
+export const destroy = async (id: string) =>
   await Song.findByIdAndDelete(id);
