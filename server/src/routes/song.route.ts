@@ -1,5 +1,4 @@
 import { Song } from "../models/Song.model.js";
-// import { getAllSongs, getSongById, createSong, updateSong, deleteSong, getSongStatistics, getSongStatisticsByArtist, getSongStatisticsByAlbum, getSongStatisticsByGenre, getDistinctArtists, getDistinctAlbums, getDistinctGenres } from "../controllers/song.controller.js";
 import express from "express";
 import * as SongController from '../controllers/song.controller.js' 
 export default (router: express.Router) => {

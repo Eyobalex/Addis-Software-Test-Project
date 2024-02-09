@@ -1,8 +1,5 @@
 
 import { ISong } from 'types/song.type.js';
-// import {createSong, deleteSong, getDistinctAlbums, getDistinctArtists, getDistinctGenres, getSongById, getSongStatistics, getSongStatisticsByAlbum, getSongStatisticsByArtist, getSongStatisticsByGenre, getSongs, updateSong} from '../repositories/song.repository.js' 
-import { IStatisticsResponse } from 'types/statistics-response.type.js';
-
 import * as SongRepository from '../repositories/song.repository.js';
 export const getAll = async (query: any) => await SongRepository.getAll(query);
 export const getStatistics = async () => await SongRepository.getSongStatistics();
