@@ -85,14 +85,14 @@ const SongForm: React.FC<SongFormProps> = ({
         payload: { id: song._id, song: formData },
       })
       toast.success("Song updated successfully!", {
-        position: "top-center",
-        autoClose: 15000,
+        position: "top-right",
+        autoClose: 1500,
       })
     } else {
       dispatch({ type: "songs/addSong", payload: formData })
       toast.success("Song created successfully!", {
-        position: "top-center",
-        autoClose: 15000,
+        position: "top-right",
+        autoClose: 1500,
       })
     }
     dispatch({ type: "songs/fetchArtistStatistics" })

@@ -1,5 +1,6 @@
 import emotionStyled from "@emotion/styled"
 import { debounce } from "lodash"
+import { useEffect, useState } from "react"
 
 interface FilterProp {
   artists: string[]
@@ -43,6 +44,14 @@ export const FilterComponent: React.FC<FilterProp> = ({
   setSelectedGenre,
   setSearchQuery,
 }) => {
+
+  const [search, setSearch] = useState<string>('');
+
+  useEffect(()=> {
+    if(searchQuery){
+      setSearch(searchQuery);
+    }
+  }, [searchQuery])
   return (
     <FilterContainer>
       <Select
@@ -53,18 +62,18 @@ export const FilterComponent: React.FC<FilterProp> = ({
 
         {artists &&
           artists.length > 0 &&
-          artists.map((artist: string) => (
-            <option value={artist}>{artist}</option>
+          artists.map((artist: string, i: number) => (
+            <option value={artist} key={i}>{artist}</option>
           ))}
       </Select>
       <Select
         value={selectedAlbum}
         onChange={e => setSelectedAlbum(e.target.value)}
       >
-        <option value="">Select Album</option>
+        <option value="" >Select Album</option>
         {albums &&
           albums.length > 0 &&
-          albums.map((album: string) => <option value={album}>{album}</option>)}
+          albums.map((album: string, i:number) => <option value={album} key={i}>{album}</option>)}
       </Select>
       <Select
         value={selectedGenre}
@@ -74,19 +83,19 @@ export const FilterComponent: React.FC<FilterProp> = ({
 
         {genres &&
           genres.length > 0 &&
-          genres.map((genre: string) => <option value={genre}>{genre}</option>)}
+          genres.map((genre: string, i: number) => <option value={genre} key={i}>{genre}</option>)}
       </Select>
 
       <Input
         type="text"
         value={searchQuery}
         placeholder="Search ..."
-        onChange={debounce(async e => {
-          await setSearchQuery(e.target.value)
-        }, 1000)}
-        onKeyDown={debounce(async e => {
-          await setSearchQuery(e.currentTarget?.value)
-        }, 1000)}
+        onChange={async e => {
+           await setSearchQuery(e.target.value);
+        }}
+        // onKeyDown={debounce(async e => {
+        //   await setSearchQuery(e.currentTarget?.value)
+        // }, 1000)}
       />
     </FilterContainer>
   )

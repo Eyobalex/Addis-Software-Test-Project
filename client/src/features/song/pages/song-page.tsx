@@ -74,7 +74,7 @@ const Loader = css`
 
 const Relative = emotionStyled.div({
   position: "relative",
-  marginTop: "25rem"
+  marginTop: "25rem",
 })
 
 const Centered = emotionStyled.div({
@@ -154,8 +154,8 @@ export function SongPage() {
 
             closeModal()
             toast.success("Song deleted successfully!", {
-              position: "top-center",
-              autoClose: 15000,
+              position: "top-right",
+              autoClose: 1500,
             })
           },
         },
@@ -196,7 +196,6 @@ export function SongPage() {
       {songs.isLoading ? (
         <Relative>
           <Centered>
-            
             {/*@ts-ignore*/}
             <div css={Loader}></div>
           </Centered>
@@ -207,8 +206,10 @@ export function SongPage() {
 
           <h1>
             Addis Songs
-            
-              <IconPlaylistAdd onClick={openModal} style={{ marginLeft: "50rem", cursor: "pointer" }}/> 
+            <IconPlaylistAdd
+              onClick={openModal}
+              style={{ marginLeft: "50rem", cursor: "pointer" }}
+            />
           </h1>
 
           <FilterComponent
@@ -228,26 +229,25 @@ export function SongPage() {
           <div className="container">
             <table>
               <thead>
-                <th>No</th>
-                <th>Title</th>
-                <th>Artist</th>
-                <th>Album</th>
-                <th>Genre</th>
-                <th>Actions</th>
+                <tr>
+                  <th>No</th>
+                  <th>Title</th>
+                  <th>Artist</th>
+                  <th>Album</th>
+                  <th>Genre</th>
+                  <th>Actions</th>
+                </tr>
               </thead>
               <tbody>
-
                 {songs.data && songs.data.length < 1 ? (
                   <tr>
                     <td colSpan={6}>
-                    <Empty />
-
+                      <Empty />
                     </td>
-
                   </tr>
                 ) : (
                   songs.data.map((song: Song, index: number) => (
-                    <tr>
+                    <tr key={index}>
                       <td>{++index}</td>
                       <td>{song.title}</td>
                       <td>
@@ -304,16 +304,19 @@ export function SongPage() {
                       </td>
                       <td>
                         <IconEdit
+                          style={{ cursor: "pointer" }}
                           onClick={() => {
                             openEditModal(song)
                           }}
                         />
-                        <IconTrash onClick={() => deleteCall(song)} />
+                        <IconTrash
+                          style={{ cursor: "pointer" }}
+                          onClick={() => deleteCall(song)}
+                        />
                       </td>
                     </tr>
                   ))
                 )}
-               
               </tbody>
             </table>
           </div>
