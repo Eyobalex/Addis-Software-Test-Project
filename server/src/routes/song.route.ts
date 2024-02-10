@@ -1,23 +1,22 @@
 import { Song } from "../models/Song.model.js";
-import { getAllSongs, getSongById, createSong, updateSong, deleteSong, getSongStatistics, getSongStatisticsByArtist, getSongStatisticsByAlbum, getSongStatisticsByGenre, getDistinctArtists, getDistinctAlbums, getDistinctGenres } from "../controllers/song.controller.js";
 import express from "express";
-
+import * as SongController from '../controllers/song.controller.js' 
 export default (router: express.Router) => {
-  router.get("/songs", getAllSongs);
-  router.get("/songs/statistics", getSongStatistics);
+  router.get("/songs", SongController.getAllSongs);
+  router.get("/songs/statistics", SongController.getSongStatistics);
 
-  router.get("/songs/statistics-by-artist", getSongStatisticsByArtist);
-  router.get("/songs/statistics-by-album", getSongStatisticsByAlbum);
-  router.get("/songs/statistics-by-genre", getSongStatisticsByGenre);
+  router.get("/songs/statistics-by-artist", SongController.getSongStatisticsByArtist);
+  router.get("/songs/statistics-by-album", SongController.getSongStatisticsByAlbum);
+  router.get("/songs/statistics-by-genre", SongController.getSongStatisticsByGenre);
 
-  router.get("/songs/artists", getDistinctArtists);
-  router.get("/songs/albums", getDistinctAlbums);
-  router.get("/songs/genres", getDistinctGenres);
+  router.get("/songs/artists", SongController.getDistinctArtists);
+  router.get("/songs/albums", SongController.getDistinctAlbums);
+  router.get("/songs/genres", SongController.getDistinctGenres);
 
-  router.get("/songs/:songId", getSongById);
-  router.post("/songs/create", createSong);
-  router.put("/songs/update/:songId", updateSong);
-  router.delete("/songs/delete/:songId", deleteSong);
+  router.get("/songs/:songId", SongController.getSongById);
+  router.post("/songs/create", SongController.createSong);
+  router.put("/songs/update/:songId", SongController.updateSong);
+  router.delete("/songs/delete/:songId", SongController.deleteSong);
 
   router.get('/test', async(req, res)=> {
 

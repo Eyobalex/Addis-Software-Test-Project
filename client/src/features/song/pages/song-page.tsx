@@ -207,10 +207,8 @@ export function SongPage() {
 
           <h1>
             Addis Songs
-            <button onClick={openModal} style={{ marginLeft: "50rem" }}>
-              {" "}
-              <IconPlaylistAdd /> Add
-            </button>
+            
+              <IconPlaylistAdd onClick={openModal} style={{ marginLeft: "50rem", cursor: "pointer" }}/> 
           </h1>
 
           <FilterComponent

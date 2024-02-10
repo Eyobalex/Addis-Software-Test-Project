@@ -18,8 +18,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use('/api', routes());
-connect().then(() => {
+
+const setup = async () => {
     try {
+
+        await connect();
         app.listen(process.env.PORT, () => {
             console.log(`server started on  http://localhost:${process.env.PORT}`);
         });
@@ -27,6 +30,6 @@ connect().then(() => {
         console.log("🚀 ~ connect ~ error:", error)
         
     }
-})
+}
 
-
+setup();

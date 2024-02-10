@@ -19,13 +19,14 @@ interface FilterProp {
 
 const FilterContainer = emotionStyled.div({
   display: "flex",
-  justifyContent: "space-between",
-  width: "80%",
-  marginLeft: "10rem",
+  justifyContent: "space-around",
+  width: "65%",
+  marginLeft: "23rem",
+  
 })
 
-const Select = emotionStyled.select({ width: "15%", height: "2.5rem" })
-const Input = emotionStyled.input({ width: "15%", height: "2.1rem" })
+const Select = emotionStyled.select({ width: "15%", height: "2.5rem", borderRadius: "15rem", paddingLeft: "7px" })
+const Input = emotionStyled.input({ width: "15%", height: "2.1rem", borderRadius: "15rem", paddingLeft: "7px" })
 
 export const FilterComponent: React.FC<FilterProp> = ({
   artists,
@@ -79,12 +80,13 @@ export const FilterComponent: React.FC<FilterProp> = ({
       <Input
         type="text"
         value={searchQuery}
+        placeholder="Search ..."
         onChange={debounce(async e => {
           await setSearchQuery(e.target.value)
-        }, 5000)}
+        }, 1000)}
         onKeyDown={debounce(async e => {
-          await setSearchQuery(e.currentTarget.value)
-        }, 5000)}
+          await setSearchQuery(e.currentTarget?.value)
+        }, 1000)}
       />
     </FilterContainer>
   )
