@@ -13,15 +13,27 @@ export const TotalStats: React.FC<TotalStatsProp> = ({stats}) => {
     })
     const LI = styled.li({
         listStyle: "none",
+        float: "left"
     })
   return (
     <>
-      <UL>
+      {/* <UL>
         <LI>Total Songs: {stats.totalSongs}</LI>
         <LI>Total Artists: {stats.totalArtists}</LI>
         <LI>Total Albums: {stats.totalAlbums}</LI>
         <LI>Total Genres: {stats.totalGenres}</LI>
-      </UL>
+      </UL> */}
+
+      <table>
+            <thead>
+                <tr>
+                    <th>Total Songs: {stats.totalSongs}</th>
+                    <th>Total Artists: {stats.totalArtists}</th>
+                    <th>Total Albums: {stats.totalAlbums}</th>
+                    <th>Total Genres: {stats.totalGenres}</th>
+                </tr>
+            </thead>
+        </table>
     </>
   )
 }
