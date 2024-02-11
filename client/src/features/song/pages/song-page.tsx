@@ -140,6 +140,19 @@ export function SongPage() {
     setModalIsOpen(true)
   }
 
+  const fetchAll = () => {
+    dispatch({ type: "songs/fetchSongs" })
+    dispatch({ type: "songs/fetchArtistStatistics" })
+    dispatch({ type: "songs/fetchAlbumStatistics" })
+    dispatch({ type: "songs/fetchGenreStatistics" })
+
+    dispatch({ type: "songs/fetchArtists" })
+    dispatch({ type: "songs/fetchAlbums" })
+    dispatch({ type: "songs/fetchGenres" })
+
+    dispatch({ type: "songs/fetchStatistics" })
+  }
+
   const deleteCall = (song: Song) => {
     // console.log("🚀 ~ deleteCall ~ song:", {...song, id: song._id})
 
@@ -151,12 +164,12 @@ export function SongPage() {
           label: "Delete",
           onClick: () => {
             dispatch({ type: "songs/deleteSong", payload: song._id })
-
-            closeModal()
-            toast.success("Song deleted successfully!", {
-              position: "top-right",
-              autoClose: 1500,
-            })
+            fetchAll();
+            closeModal();
+            // toast.success("Song deleted successfully!", {
+            //   position: "top-right",
+            //   autoClose: 1500,
+            // })
           },
         },
         {
@@ -179,16 +192,7 @@ export function SongPage() {
     setSearchQuery(undefined)
   }
   useEffect(() => {
-    dispatch({ type: "songs/fetchSongs" })
-    dispatch({ type: "songs/fetchArtistStatistics" })
-    dispatch({ type: "songs/fetchAlbumStatistics" })
-    dispatch({ type: "songs/fetchGenreStatistics" })
-
-    dispatch({ type: "songs/fetchArtists" })
-    dispatch({ type: "songs/fetchAlbums" })
-    dispatch({ type: "songs/fetchGenres" })
-
-    dispatch({ type: "songs/fetchStatistics" })
+   fetchAll()
   }, [dispatch])
 
   return (
@@ -249,9 +253,9 @@ export function SongPage() {
                   songs.data.map((song: Song, index: number) => (
                     <tr key={index}>
                       <td>{++index}</td>
-                      <td>{song.title}</td>
+                      <td>{song?.title}</td>
                       <td>
-                        {song.artist}
+                        {song?.artist}
                         <hr />
                         <ul>
                           <li>
@@ -259,7 +263,7 @@ export function SongPage() {
                             {
                               songs.artistStat.filter(
                                 (stat: ArtistStat) =>
-                                  stat.artist == song.artist,
+                                  stat?.artist == song?.artist,
                               )[0]?.totalSongs
                             }
                           </li>
@@ -268,28 +272,28 @@ export function SongPage() {
                             {
                               songs.artistStat.filter(
                                 (stat: ArtistStat) =>
-                                  stat.artist == song.artist,
+                                  stat?.artist == song?.artist,
                               )[0]?.totalAlbums
                             }
                           </li>
                         </ul>
                       </td>
                       <td>
-                        {song.album}
+                        {song?.album}
                         <hr />
                         <ul>
                           <li>
                             Total Songs:
                             {
                               songs.albumStat.filter(
-                                (stat: AlbumStat) => stat.album == song.album,
+                                (stat: AlbumStat) => stat?.album == song?.album,
                               )[0]?.totalSongs
                             }
                           </li>
                         </ul>
                       </td>
                       <td>
-                        {song.genre}
+                        {song?.genre}
                         <hr />
                         <ul>
                           <li>
@@ -330,6 +334,7 @@ export function SongPage() {
               song={selectedSong}
               openModal={openModal}
               closeModal={closeModal}
+              fetchAll={fetchAll}
             />
           </Modal>
         </>
