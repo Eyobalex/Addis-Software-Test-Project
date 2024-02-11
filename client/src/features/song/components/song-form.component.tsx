@@ -10,6 +10,7 @@ interface SongFormProps {
 
   openModal?: () => void
   closeModal?: () => void
+  fetchAll: () => void
 }
 
 // const FormContainer = emotionStyled.div
@@ -50,6 +51,7 @@ const SongForm: React.FC<SongFormProps> = ({
   song,
   openModal,
   closeModal,
+  fetchAll
 }) => {
   const initialState: Song = {
     title: "",
@@ -84,25 +86,13 @@ const SongForm: React.FC<SongFormProps> = ({
         type: "songs/updateSong",
         payload: { id: song._id, song: formData },
       })
-      toast.success("Song updated successfully!", {
-        position: "top-right",
-        autoClose: 1500,
-      })
+      
     } else {
       dispatch({ type: "songs/addSong", payload: formData })
-      toast.success("Song created successfully!", {
-        position: "top-right",
-        autoClose: 1500,
-      })
+     
     }
-    dispatch({ type: "songs/fetchArtistStatistics" })
-    dispatch({ type: "songs/fetchAlbumStatistics" })
-    dispatch({ type: "songs/fetchGenreStatistics" })
 
-    dispatch({ type: "songs/fetchArtists" })
-    dispatch({ type: "songs/fetchAlbums" })
-    dispatch({ type: "songs/fetchGenres" })
-
+    fetchAll();
     if (closeModal) {
       closeModal()
     }

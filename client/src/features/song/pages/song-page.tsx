@@ -140,6 +140,19 @@ export function SongPage() {
     setModalIsOpen(true)
   }
 
+  const fetchAll = () => {
+    dispatch({ type: "songs/fetchSongs" })
+    dispatch({ type: "songs/fetchArtistStatistics" })
+    dispatch({ type: "songs/fetchAlbumStatistics" })
+    dispatch({ type: "songs/fetchGenreStatistics" })
+
+    dispatch({ type: "songs/fetchArtists" })
+    dispatch({ type: "songs/fetchAlbums" })
+    dispatch({ type: "songs/fetchGenres" })
+
+    dispatch({ type: "songs/fetchStatistics" })
+  }
+
   const deleteCall = (song: Song) => {
     // console.log("🚀 ~ deleteCall ~ song:", {...song, id: song._id})
 
@@ -151,12 +164,12 @@ export function SongPage() {
           label: "Delete",
           onClick: () => {
             dispatch({ type: "songs/deleteSong", payload: song._id })
-
-            closeModal()
-            toast.success("Song deleted successfully!", {
-              position: "top-right",
-              autoClose: 1500,
-            })
+            fetchAll();
+            closeModal();
+            // toast.success("Song deleted successfully!", {
+            //   position: "top-right",
+            //   autoClose: 1500,
+            // })
           },
         },
         {
@@ -179,16 +192,7 @@ export function SongPage() {
     setSearchQuery(undefined)
   }
   useEffect(() => {
-    dispatch({ type: "songs/fetchSongs" })
-    dispatch({ type: "songs/fetchArtistStatistics" })
-    dispatch({ type: "songs/fetchAlbumStatistics" })
-    dispatch({ type: "songs/fetchGenreStatistics" })
-
-    dispatch({ type: "songs/fetchArtists" })
-    dispatch({ type: "songs/fetchAlbums" })
-    dispatch({ type: "songs/fetchGenres" })
-
-    dispatch({ type: "songs/fetchStatistics" })
+   fetchAll()
   }, [dispatch])
 
   return (
@@ -330,6 +334,7 @@ export function SongPage() {
               song={selectedSong}
               openModal={openModal}
               closeModal={closeModal}
+              fetchAll={fetchAll}
             />
           </Modal>
         </>

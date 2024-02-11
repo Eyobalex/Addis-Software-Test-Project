@@ -158,6 +158,10 @@ function* addSong(action: any): Generator<any, void, any> {
     const response = yield call(addSongAPI, action.payload)
     yield put(createSong(response.data.data))
     yield put(loadingStopped())
+    toast.success("Song created successfully!", {
+      position: "top-right",
+      autoClose: 1500,
+    })
   } catch (error) {
     yield put(loadingStopped())
     toast.error("Somthing went wrong. Please Try again", {
@@ -178,6 +182,11 @@ function* updateSong(action: any): Generator<any, void, any> {
     )
     yield put(updateExistingSong(response.data.data))
     yield put(loadingStopped())
+
+    toast.success("Song updated successfully!", {
+      position: "top-right",
+      autoClose: 1500,
+    })
   } catch (error) {
     yield put(loadingStopped())
     toast.error("Somthing went wrong. Please Try again", {
@@ -194,6 +203,10 @@ function* deleteSong(action: any): Generator<any, void, any> {
     yield call(deleteSongAPI, action.payload)
     yield put(deleteExistingSong(action.payload))
     yield put(loadingStopped())
+    toast.success("Song deleted successfully", {
+      position: 'top-right',
+      autoClose: 1500
+  })
   } catch (error) {
     yield put(loadingStopped())
     toast.error("Somthing went wrong. Please Try again", {

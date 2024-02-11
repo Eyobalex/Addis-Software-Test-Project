@@ -16,6 +16,7 @@ interface FilterProp {
   setSelectedArtist?: any
   setSelectedGenre?: any
   setSearchQuery?: any
+
 }
 
 const FilterContainer = emotionStyled.div({
@@ -42,7 +43,7 @@ export const FilterComponent: React.FC<FilterProp> = ({
   setSelectedAlbum,
   setSelectedArtist,
   setSelectedGenre,
-  setSearchQuery,
+  setSearchQuery
 }) => {
 
   const [search, setSearch] = useState<string>('');
