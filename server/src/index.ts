@@ -1,4 +1,5 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -6,6 +7,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connect from './config/db.js';
 import routes from './routes/index.js';
+import {apiDocumentation} from "../docs/apidocs.js";
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use('/api', routes());
+app.use('/', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 
 const setup = async () => {
     try {
