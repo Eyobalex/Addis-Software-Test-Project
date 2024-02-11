@@ -253,9 +253,9 @@ export function SongPage() {
                   songs.data.map((song: Song, index: number) => (
                     <tr key={index}>
                       <td>{++index}</td>
-                      <td>{song.title}</td>
+                      <td>{song?.title}</td>
                       <td>
-                        {song.artist}
+                        {song?.artist}
                         <hr />
                         <ul>
                           <li>
@@ -263,7 +263,7 @@ export function SongPage() {
                             {
                               songs.artistStat.filter(
                                 (stat: ArtistStat) =>
-                                  stat.artist == song.artist,
+                                  stat?.artist == song?.artist,
                               )[0]?.totalSongs
                             }
                           </li>
@@ -272,28 +272,28 @@ export function SongPage() {
                             {
                               songs.artistStat.filter(
                                 (stat: ArtistStat) =>
-                                  stat.artist == song.artist,
+                                  stat?.artist == song?.artist,
                               )[0]?.totalAlbums
                             }
                           </li>
                         </ul>
                       </td>
                       <td>
-                        {song.album}
+                        {song?.album}
                         <hr />
                         <ul>
                           <li>
                             Total Songs:
                             {
                               songs.albumStat.filter(
-                                (stat: AlbumStat) => stat.album == song.album,
+                                (stat: AlbumStat) => stat?.album == song?.album,
                               )[0]?.totalSongs
                             }
                           </li>
                         </ul>
                       </td>
                       <td>
-                        {song.genre}
+                        {song?.genre}
                         <hr />
                         <ul>
                           <li>
