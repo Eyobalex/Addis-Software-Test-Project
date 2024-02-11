@@ -15,5 +15,5 @@
    - ```npm start```
    - open another terminal on project root
    - ```cd client```
-   - ```cp .env.example```
+   - ```cp .env.example .env```
    - ```npm start```
