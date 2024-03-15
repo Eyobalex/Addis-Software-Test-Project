@@ -91,9 +91,9 @@ export const FilterComponent: React.FC<FilterProp> = ({
         type="text"
         value={searchQuery}
         placeholder="Search ..."
-        onChange={async e => {
+        onChange={debounce(async (e) => {
            await setSearchQuery(e.target.value);
-        }}
+        }, 1000)}
         // onKeyDown={debounce(async e => {
         //   await setSearchQuery(e.currentTarget?.value)
         // }, 1000)}

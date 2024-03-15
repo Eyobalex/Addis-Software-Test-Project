@@ -5,12 +5,10 @@ import { IconEdit, IconPlaylistAdd, IconTrash } from "@tabler/icons-react"
 import Modal from "../../../shared/components/modal/modal-component"
 import SongForm from "../components/song-form.component"
 import { confirmAlert } from "react-confirm-alert"
-import { toast } from "react-toastify"
 import { TotalStats } from "../components/total-stats.component"
 import { ArtistStat } from "../../../models/artist-stat.model"
 import { AlbumStat } from "../../../models/album-stat.model"
 import { GenreStat } from "../../../models/genre-stat.model"
-import { debounce } from "lodash"
 import emotionStyled from "@emotion/styled"
 import { FilterComponent } from "../components/filter.component"
 import { css, keyframes } from "@emotion/react"
@@ -104,7 +102,6 @@ export function SongPage() {
 
   const dispatch = useDispatch()
   const songs = useSelector((state: any) => state.songs)
-  console.log("🚀 ~ SongPage ~ songs:", songs)
 
   useEffect(() => {
     let queryParam = ""

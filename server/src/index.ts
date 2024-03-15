@@ -20,11 +20,10 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use('/api', routes());
-app.use('/', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 
-const setup = async () => {
+(async function setup(){
     try {
-
         await connect();
         app.listen(process.env.PORT, () => {
             console.log(`server started on  http://localhost:${process.env.PORT}`);
@@ -33,6 +32,4 @@ const setup = async () => {
         console.log("🚀 ~ connect ~ error:", error)
         
     }
-}
-
-setup();
+})();
