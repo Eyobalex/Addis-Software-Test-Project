@@ -1,5 +1,4 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+
 import { Statistics } from "../../../models/statistics.model"
 import styled from "@emotion/styled"
 

@@ -29,7 +29,7 @@ const initialState: SongsState = {
   genreStat: [
     {
       totalSongs: 0,
-      genre: "string",
+      genre: "",
     },
   ],
   albumStat: [
